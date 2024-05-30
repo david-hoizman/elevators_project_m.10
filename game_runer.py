@@ -11,7 +11,7 @@ screen = pygame.display.set_mode((WIDTH_SCREEN, HEIGHT_SCREEN))
 
 building = Building(screen)
 building.start()
-
+     
 running = True
 while running:
     for event in pygame.event.get():
@@ -19,6 +19,9 @@ while running:
             running = False
     screen.fill(WHITE)
     building.draw()
+    building.move_elevator(building.elevators_array[2], 200)
+    pygame.display.update()
+
     pygame.display.flip()
 pygame.quit()
 sys.exit()
