@@ -14,10 +14,14 @@ building.start()
 # dt =clock.tick(FPS) 
    
 running = True
+
+pygame.mixer.init()
+
+
+screen.fill(WHITE)
+building.draw()
+pygame.display.flip()
 while running:
-    screen.fill(WHITE)
-    building.draw()
-    pygame.display.flip()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -25,10 +29,10 @@ while running:
             mouse_pos = pygame.mouse.get_pos()
             for floor in building.floors_array:
                 distance = (( mouse_pos[0] - floor.btn_rect[0]) ** 2 + ( mouse_pos[1] - floor.btn_rect[1]) ** 2)  ** 0.5
-                if distance <= floor.circle_radius:
-                    print(HEIGHT_SCREEN-floor.floor_number*HEIGHT_FLOOR)
-                    building.get_elevator(0,floor.floor_number)
+                if distance <= floor.circle_radius:  
+                    building.get_elevator(building.floors_array[floor.floor_number])                  
                     break
+                    
 
 pygame.quit()
 sys.exit()
