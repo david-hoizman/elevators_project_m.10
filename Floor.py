@@ -11,7 +11,13 @@ class Floor:
         self.circle_radius = None #רדיוס הפקד
         self.y = (HEIGHT_FLOOR * self.floor_number) 
         self.txt_color = BLACK
+        self.timer = 0
         
+    def __str__(self) -> str:
+        return f"{self.floor_number}"
+    
+    
+    
     def draw(self):
         #create floor
         image = pygame.image.load(FLOOR_BACKGROUND)
@@ -38,4 +44,22 @@ class Floor:
         y = HEIGHT_SCREEN-(self.floor_number*HEIGHT_FLOOR)
         if self.floor_number != 0:
             black_line =pygame.draw.line(self.screen,BLACK,(0,y),(WIDTH_FLOOR-1,y),LINE_HEIGHT)
+
+        font1 = pygame.font.Font(None,28)
+        btn_txt1 = font1.render(str(self.timer),True,BLACK)
+        txt_position1 = (btn.centerx - 60,btn.centery)
+        btn_txt_rect1 = btn_txt1.get_rect()
+        btn_txt_rect1.center = txt_position1
+        if self.timer>0:
+            self.screen.blit(btn_txt1, btn_txt_rect1)
+        
+        
+    def countDown(self):
+        while self.timer>0.0:
+            print(f"f: {self.floor_number} t: {self.timer}")
+            self.draw()
+            pygame.display.flip()
+            self.timer -= 0.5
+            pygame.time.delay(500)
+
         
