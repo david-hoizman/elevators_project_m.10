@@ -1,5 +1,5 @@
 import pygame
-from constants import ELEVATOR_IMAGE,HEIGHT_SCREEN,BLACK,WIDTH_FLOOR,HEIGHT_ELEVATOR,WIDTH_ELEVATOR,HEIGHT_FLOOR,WHITE,GREEN,RED
+from constants import ELEVATOR_IMAGE,HEIGHT_SCREEN,BLACK,WIDTH_FLOOR,SPEED,HEIGHT_ELEVATOR,WIDTH_ELEVATOR,HEIGHT_FLOOR,WHITE,GREEN,RED
 import threading
 import time
 class Elevator:
@@ -79,7 +79,7 @@ class Elevator:
         # Check if the elevator is not yet at its destination
         if self._y != self._dest_y:
             self._screen.fill(WHITE, self._rect) 
-            self._rect.y += direction * 4
+            self._rect.y += direction * SPEED
             self._y = self._rect.y
             
         # If the elevator reaches its destination and is not available and not in delay state
@@ -150,7 +150,6 @@ class Elevator:
             self._current_floor.set_is_disable(False)
             self.get_elevator(self._passengers_queue[0]) 
             
-    
     def play_sound(self):
         """
         Play a sound effect.

@@ -68,7 +68,7 @@ class Building:
 
         for elevator in self._elevators_array:
             # Calculates the waiting time until the elevator is available and the floor from which the elevator will leave
-            if len(elevator.get_passengers_queue()) ==0:
+            if len(elevator.get_passengers_queue()) == 0:
                 waiting_time = 0
                 exit_floor = elevator.get_current_floor().get_floor_number()
             else:
@@ -89,9 +89,6 @@ class Building:
                 min_elv = elevator 
         
         # Assign the calculated time as the timer for the floor
-
-
-        
         floor.set_timer(min_time)
         
         # Return the optimal elevator to respond to the request

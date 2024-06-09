@@ -21,11 +21,10 @@ class Floor:
             timer (float): The timer value.
             timer_update_time (float): The last time the timer was updated.
             is_timer_on (bool): Flag indicating whether the timer is running.
-            is_disable (bool): Flag indicating whether the floor object is disabled.
+            is_disable (bool): Flag indicating whether the floor object is disabled (is she clicking).
         """
         self._screen = screen 
         self._floor_number = floor_number 
-        # self.y = (HEIGHT_FLOOR * self.floor_number) 
         self._floor_number_txt_color = BLACK 
         self._timer = 0 
         self._timer_update_time = time.time() 
@@ -149,7 +148,6 @@ class Floor:
             self._screen.fill(WHITE, self._rect) 
             self.display_elements()                
         
-            
     def change_floor_number_txt_color(self, color):
         """
         Change the color of the button of the floor.

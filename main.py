@@ -1,7 +1,7 @@
 from Building import Building
 import pygame
 import sys
-from constants import HEIGHT_SCREEN,WIDTH_SCREEN,WHITE
+from constants import HEIGHT_SCREEN,WIDTH_SCREEN,WHITE,FPS
 
 # Initializing pygame
 pygame.init() 
@@ -39,7 +39,7 @@ while running:
                     building.call_elevator(floor) 
 
     # Setting the frame rate
-    pygame.time.Clock().tick(30)
+    pygame.time.Clock().tick(FPS)
 
     # Updating all elements in the building
     building.updateAll()     
