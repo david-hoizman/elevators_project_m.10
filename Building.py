@@ -1,9 +1,10 @@
 from Floor import Floor
 from Elevator import Elevator
 import json
-
+import time
+import math
 with open("settings.json", "r") as json_file:
-    settings = json.load(json_file)
+    data = json.load(json_file)
 
 
 class Building:
@@ -23,11 +24,11 @@ class Building:
             len_elevators_array (int): The length of the elevators_array, indicating the total number of elevators in the building.
     
         """
-        self.screen = screen 
-        self.floors_array = [] 
-        self.elevators_array = [] 
-        self.len_floors_array =  settings["number_of_floors"]
-        self.len_elevators_array = settings["number_of_elevators"]
+        self._screen = screen 
+        self._floors_array = [] 
+        self._elevators_array = [] 
+        self._len_floors_array =  data["number_of_floors"]
+        self._len_elevators_array = data["number_of_elevators"]
   
     def draw(self):
         """
@@ -39,13 +40,13 @@ class Building:
         """
         
         # Drawing floors
-        for i in range(self.len_floors_array + 1):
-            self.floors_array.append(Floor(self.screen, i)) 
-            self.floors_array[i].draw() 
+        for i in range(self._len_floors_array + 1):
+            self._floors_array.append(Floor(self._screen, i)) 
+            self._floors_array[i].draw() 
         # Drawing elevators
-        for i in range(self.len_elevators_array):
-            self.elevators_array.append(Elevator(self.screen, i,self.floors_array[0])) 
-            self.elevators_array[i].draw() 
+        for i in range(self._len_elevators_array):
+            self._elevators_array.append(Elevator(self._screen, i,self._floors_array[0])) 
+            self._elevators_array[i].draw() 
     
     def choose_elevator(self, floor):
         """
@@ -65,17 +66,22 @@ class Building:
         min_time = float('inf') # Initialize the minimum time to infinity
         min_elv = None # Initialize the optimal elevator to None
 
-        for elevator in self.elevators_array:
+        for elevator in self._elevators_array:
             # Calculates the waiting time until the elevator is available and the floor from which the elevator will leave
-            if len(elevator.passengers_queue) ==0:
+            if len(elevator.get_passengers_queue()) ==0:
                 waiting_time = 0
-                exit_floor = elevator.current_floor.floor_number 
+                exit_floor = elevator.get_current_floor().get_floor_number()
             else:
-                waiting_time = elevator.passengers_queue[-1].timer +2 
-                exit_floor = elevator.passengers_queue[-1].floor_number 
+                if len(elevator.get_passengers_queue()) == 1:
+                    delay = 2 - (time.time() - elevator.get_delay_time()) 
+                    final_delay = delay if delay >= 0 else 2
+                else:
+                    final_delay = 2
+                waiting_time = elevator.get_passengers_queue()[-1].get_timer() + final_delay
+                exit_floor = elevator.get_passengers_queue()[-1].get_floor_number()
                 
             # Calculate the total time for the elevator to respond to the request
-            final_time = waiting_time + abs(floor.floor_number - exit_floor) * 0.5 
+            final_time = waiting_time + abs(floor.get_floor_number() - exit_floor) * 0.5 
 
             # Update the minimum time and optimal elevator if necessary
             if final_time < min_time:
@@ -83,7 +89,10 @@ class Building:
                 min_elv = elevator 
         
         # Assign the calculated time as the timer for the floor
-        floor.timer = min_time 
+
+
+        
+        floor.set_timer(self.round_nearest_half(min_time))
         
         # Return the optimal elevator to respond to the request
         return min_elv 
@@ -98,7 +107,7 @@ class Building:
         Args:
             floor (Floor): The floor from which the request is made.
         """
-        floor.is_disable = True
+        floor.set_is_disable(True)
         elevator = self.choose_elevator(floor) 
         elevator.enqueue(floor) 
     
@@ -112,14 +121,33 @@ class Building:
         """
         
         # Update all elevators in the building
-        for elevator in self.elevators_array:
+        for elevator in self._elevators_array:
             elevator.update_elevator() 
             elevator.display_element()
         # Update timers for all floors in the building
-        for floor in self.floors_array:
+        for floor in self._floors_array:
             floor.update_timer()
 
-    
+    def round_nearest_half(self,number):
+        """
+        Rounds a given number to the nearest half.
+
+        Args:
+        number (float): The number to be rounded.
+
+        Returns:
+        float: The rounded number to the nearest half.
+        """
+        if number % 1 < 0.25:
+            return math.floor(number)
+        elif number % 1 < 0.75:
+            return math.floor(number) + 0.5
+        else:
+            return math.ceil(number)
+
+    def get_floors_array(self):
+        return self._floors_array  
+
     
     
 
