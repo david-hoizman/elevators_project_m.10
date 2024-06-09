@@ -91,8 +91,8 @@ class Floor:
         This method sets up the parameters for the text displaying the timer value, such as the font size, font color, and text position.
         """
         self._font_timer = pygame.font.Font('DS-DIGI.TTF', 28)  # Replace 'path/to/your_font.ttf' with the path to your font file
-        self._timer_txt = self._font_timer.render(str(round(self._timer,1)),True,RED)
-        timer_txt_position = (self._rect.x + 35,self._rect.centery+2)
+        self._timer_txt = self._font_timer.render(str(round(self._timer, 1)), True, RED)
+        timer_txt_position = (self._rect.x + 35, self._rect.centery + 2)
         self._timer_txt_rect = self._timer_txt.get_rect()
         self._timer_txt_rect.center = timer_txt_position
  
@@ -103,7 +103,7 @@ class Floor:
         This method blits the scaled image of the floor, draws the round controller button, and displays the floor number and timer text (if timer>0) on the game screen.
         """
         self._screen.blit(self._scaled_image, self._rect)
-        self._controller = pygame.draw.circle(self._screen, (255, 255, 255), self._controller_rect , self._circle_radius)
+        self._controller = pygame.draw.circle(self._screen, (WHITE), self._controller_rect , self._circle_radius)
         self._controller_txt = self._font_floor_number.render(str(self._floor_number),True,self._floor_number_txt_color)
         self._screen.blit(self._controller_txt, self._controller_txt_rect)
         if self._is_timer_on and self._timer >= 0:
