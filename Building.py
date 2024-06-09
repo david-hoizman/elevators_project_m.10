@@ -92,7 +92,7 @@ class Building:
 
 
         
-        floor.set_timer(self.round_nearest_half(min_time))
+        floor.set_timer(min_time)
         
         # Return the optimal elevator to respond to the request
         return min_elv 
@@ -127,23 +127,6 @@ class Building:
         # Update timers for all floors in the building
         for floor in self._floors_array:
             floor.update_timer()
-
-    def round_nearest_half(self,number):
-        """
-        Rounds a given number to the nearest half.
-
-        Args:
-        number (float): The number to be rounded.
-
-        Returns:
-        float: The rounded number to the nearest half.
-        """
-        if number % 1 < 0.25:
-            return math.floor(number)
-        elif number % 1 < 0.75:
-            return math.floor(number) + 0.5
-        else:
-            return math.ceil(number)
 
     def get_floors_array(self):
         return self._floors_array  

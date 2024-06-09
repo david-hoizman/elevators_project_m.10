@@ -2,7 +2,7 @@ import pygame
 from constants import FLOOR_BACKGROUND,BLACK
 from constants import HEIGHT_SCREEN,CIRCLE_RADIUS,LINE_HEIGHT,HEIGHT_FLOOR,WIDTH_FLOOR,HEIGHT_IMAGE_FLOOR,WHITE,RED
 import time
-
+import threading
 class Floor:
     
     def __init__(self, screen, floor_number):
@@ -92,7 +92,7 @@ class Floor:
         This method sets up the parameters for the text displaying the timer value, such as the font size, font color, and text position.
         """
         self._font_timer = pygame.font.Font('DS-DIGI.TTF', 28)  # Replace 'path/to/your_font.ttf' with the path to your font file
-        self._timer_txt = self._font_timer.render(str(self._timer),True,RED)
+        self._timer_txt = self._font_timer.render(str(round(self._timer,1)),True,RED)
         timer_txt_position = (self._rect.x + 35,self._rect.centery+2)
         self._timer_txt_rect = self._timer_txt.get_rect()
         self._timer_txt_rect.center = timer_txt_position
@@ -107,9 +107,9 @@ class Floor:
         self._controller = pygame.draw.circle(self._screen, (255, 255, 255), self._controller_rect , self._circle_radius)
         self._controller_txt = self._font_floor_number.render(str(self._floor_number),True,self._floor_number_txt_color)
         self._screen.blit(self._controller_txt, self._controller_txt_rect)
-        if self._is_timer_on:
+        if self._is_timer_on and self._timer >= 0:
             self.create_timer_block()
-            self._timer_txt = self._font_timer.render(str(self._timer),True,RED)
+            self._timer_txt = self._font_timer.render(str(round(self._timer,1)),True,RED)
             self._screen.blit(self._timer_txt, self._timer_txt_rect)
         if self._floor_number != 0:
             self.create_black_line_separates()
@@ -134,7 +134,7 @@ class Floor:
 
         This method updates the timer value if the timer is running and if the elapsed time since the last update is equal to or greater than 0.5 seconds.
         """
-        if self._is_timer_on and time.time() - self._timer_update_time >= 0.5:
+        if self._is_timer_on and time.time() - self._timer_update_time >= 0.1:
                 self.decrement_timer()
                 self._timer_update_time = time.time()
     
@@ -145,13 +145,11 @@ class Floor:
         This method decrements the timer value by 0.5 if the timer value is greater than 0 and updates the game screen.
         """
         if self._timer > 0:
-            self._timer -= 0.5
+            self._timer -= 0.1
             self._screen.fill(WHITE, self._rect) 
             self.display_elements()                
-        # else:
-        #     self._is_timer_on = False
-            
         
+            
     def change_floor_number_txt_color(self, color):
         """
         Change the color of the button of the floor.
