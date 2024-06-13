@@ -44,7 +44,7 @@ The project focuses on elevator management and includes the following capabiliti
 * **settings.json:** Contains settings for the game configuration.
 
 ## Usage Instructions:
-1. Define the desired number of elevators and floors in the settings.json file (default: 6 elevators and 14 floors)
+1. Define the desired number of elevators and floors in the settings.json file (default: 5 elevators and 14 floors)
 2. Run the main code file - "main.py".
 3. Use the mouse to call the elevator to the desired floor.
 4. Enjoy the game!

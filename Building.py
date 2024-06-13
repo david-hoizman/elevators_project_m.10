@@ -1,8 +1,9 @@
 from Floor import Floor
 from Elevator import Elevator
+from constants import *
 import json
 import time
-import math
+
 with open("settings.json", "r") as json_file:
     data = json.load(json_file)
 
@@ -40,7 +41,7 @@ class Building:
         """
         
         # Drawing floors
-        for i in range(self._len_floors_array + 1):
+        for i in range(self._len_floors_array + EXTRA_FLOOR):
             self._floors_array.append(Floor(self._screen, i)) 
             self._floors_array[i].draw() 
         # Drawing elevators
@@ -73,15 +74,15 @@ class Building:
                 exit_floor = elevator.get_current_floor().get_floor_number()
             else:
                 if len(elevator.get_passengers_queue()) == 1:
-                    delay = 2 - (time.time() - elevator.get_delay_time()) 
-                    final_delay = delay if delay >= 0 else 2
+                    delay = DELAY_DURATION - (time.time() - elevator.get_delay_time()) 
+                    final_delay = delay if delay >= 0 else DELAY_DURATION
                 else:
-                    final_delay = 2
+                    final_delay = DELAY_DURATION
                 waiting_time = elevator.get_passengers_queue()[-1].get_timer() + final_delay
                 exit_floor = elevator.get_passengers_queue()[-1].get_floor_number()
                 
             # Calculate the total time for the elevator to respond to the request
-            final_time = waiting_time + abs(floor.get_floor_number() - exit_floor) * 0.5 
+            final_time = waiting_time + abs(floor.get_floor_number() - exit_floor) * FLOOR_LENGTH_TIME 
 
             # Update the minimum time and optimal elevator if necessary
             if final_time < min_time:
@@ -90,8 +91,7 @@ class Building:
         
         # Assign the calculated time as the timer for the floor
         floor.set_timer(min_time)
-        
-        # Return the optimal elevator to respond to the request
+        floor.start_timer = time.time()
         return min_elv 
     
     def call_elevator(self, floor):
@@ -104,9 +104,12 @@ class Building:
         Args:
             floor (Floor): The floor from which the request is made.
         """
-        floor.set_is_disable(True)
-        elevator = self.choose_elevator(floor) 
-        elevator.enqueue(floor) 
+        floor.set_is_disable(True)  # Disable the floor button to prevent multiple requests
+        elevator = self.choose_elevator(floor)  # Select the optimal elevator to respond to the request
+        elevator.enqueue(floor)  # Enqueue the floor request into the selected elevator's queue
+
+
+ 
     
     def updateAll(self):
         """
@@ -121,6 +124,7 @@ class Building:
         for elevator in self._elevators_array:
             elevator.update_elevator() 
             elevator.display_element()
+    
         # Update timers for all floors in the building
         for floor in self._floors_array:
             floor.update_timer()
