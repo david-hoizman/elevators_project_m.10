@@ -30,6 +30,7 @@ class Floor:
         self._is_disable = False
         self.start_timer = time.time()
         
+        
     def create_floor_image(self):
         """
         Create the floor image.
@@ -162,7 +163,6 @@ class Floor:
         self._floor_number_txt_color = color  # Update the color of the floor number text
         self.display_elements()  # Redraw the floor to reflect the color change on the game screen
         pygame.display.flip()  # Update the display
-        
         
     def get_controller_rect(self):
         return self._controller_rect  

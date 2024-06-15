@@ -134,5 +134,10 @@ class Building:
 
     
     
-
+    def num_elv_in_floor(self,floor):
+        count = 0
+        for elv in self._elevators_array:
+            if elv.get_current_floor().get_floor_number() == floor.get_floor_number():
+                count+=1
+        return count
      

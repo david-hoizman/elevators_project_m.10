@@ -33,10 +33,11 @@ while running:
             # Checking if the mouse click is within a floor's button range
             for floor in building.get_floors_array():
                 distance = (( mouse_pos[0] - floor.get_controller_rect()[0]) ** 2 + ( mouse_pos[1] - floor.get_controller_rect()[1]) ** 2)  ** 0.5 
-                if distance <= floor.get_circle_radius() and not floor.get_is_disable():   
+                if distance <= floor.get_circle_radius() and not floor.get_is_disable():
+                    if floor.get_floor_number() != 0 or building.num_elv_in_floor(floor) == 0:
 
                     # Calling the elevator to the clicked floor
-                    building.call_elevator(floor) 
+                        building.call_elevator(floor) 
 
 
 
@@ -45,10 +46,13 @@ while running:
     
     # Updating the display                   
     pygame.display.flip()
-    
+
 # Exiting pygame and the program
 pygame.quit()
 sys.exit() 
 
             
             
+            
+
+        
