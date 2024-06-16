@@ -30,7 +30,7 @@ class Elevator:
         self._passengers_queue = [] 
         self._rect = None 
         self._elv_color = WHITE
-        self._y = HEIGHT_SCREEN 
+        self._y = HEIGHT_SCREEN + LINE_HEIGHT
         self._dest_y = self._y - HEIGHT_FLOOR
         self._is_available = True 
         self._current_floor = current_floor 
@@ -49,7 +49,7 @@ class Elevator:
         Loads the elevator image file, scales the image to the required size, and sets the position of the elevator image on the game window according to the elevator ID.
         """
         el_image = pygame.image.load(ELEVATOR_IMAGE)  # Load the elevator image from file
-        self._scaled_el_image = pygame.transform.scale(el_image, (WIDTH_ELEVATOR, HEIGHT_ELEVATOR))  # Scale the image to the required size
+        self._scaled_el_image = pygame.transform.scale(el_image, (WIDTH_ELEVATOR, HEIGHT_ELEVATOR - LINE_HEIGHT))  # Scale the image to the required size
         self._rect = self._scaled_el_image.get_rect()  # Get the rectangle of the scaled image
         self._rect.bottomleft = (WIDTH_FLOOR + self._elv_id * WIDTH_ELEVATOR, self._y)  # Set the position of the elevator image based on the elevator ID
      
@@ -158,7 +158,7 @@ class Elevator:
         self._elv_color = GREEN  # Change the elevator color to green to indicate movement
         self._current_floor = floor  # Update the current floor
         # Calculate the destination vertical position based on the specified floor
-        self._dest_y = HEIGHT_SCREEN - (floor.get_floor_number() + EXTRA_FLOOR) * HEIGHT_FLOOR
+        self._dest_y = HEIGHT_SCREEN - (floor.get_floor_number() + EXTRA_FLOOR) * HEIGHT_FLOOR + LINE_HEIGHT
    
     def enqueue(self, floor):
         """
