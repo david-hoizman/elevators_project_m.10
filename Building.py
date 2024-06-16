@@ -135,6 +135,16 @@ class Building:
     
     
     def num_elv_in_floor(self,floor):
+        """
+        Returns the number of elevators currently on the specified floor.
+
+        Parameters:
+            self (Building): The building object.
+            floor (Floor): The floor object to check.
+
+        Returns:
+            int: The number of elevators on the specified floor.
+        """
         count = 0
         for elv in self._elevators_array:
             if elv.get_current_floor().get_floor_number() == floor.get_floor_number():
